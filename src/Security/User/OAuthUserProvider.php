@@ -41,4 +41,9 @@ class OAuthUserProvider implements UserProviderInterface
     {
         return OAuthUser::class === $class;
     }
+
+    public function loadUserByIdentifier(string $identifier): UserInterface
+    {
+        return new OAuthUser($identifier, $this->roles);
+    }
 }
