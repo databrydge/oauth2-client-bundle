@@ -20,7 +20,7 @@ class KnpUOAuth2ClientBundle extends Bundle
      *
      * @return KnpUOAuth2ClientExtension
      */
-    public function getContainerExtension()
+    public function getContainerExtension(): KnpUOAuth2ClientExtension
     {
         if (null === $this->extension) {
             return new KnpUOAuth2ClientExtension();

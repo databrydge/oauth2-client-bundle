@@ -18,6 +18,7 @@ use KnpU\OAuth2ClientBundle\Security\Exception\IdentityProviderAuthenticationExc
 use KnpU\OAuth2ClientBundle\Security\Exception\InvalidStateAuthenticationException;
 use KnpU\OAuth2ClientBundle\Security\Exception\NoAuthCodeAuthenticationException;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
+use League\OAuth2\Client\Token\AccessToken;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -25,6 +26,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 
 class SocialAuthenticatorTest extends TestCase
 {
@@ -88,7 +90,7 @@ class SocialAuthenticatorTest extends TestCase
 
 class StubSocialAuthenticator extends SocialAuthenticator
 {
-    public function doFetchAccessToken(OAuth2Client $client)
+    public function doFetchAccessToken(OAuth2Client $client): AccessToken
     {
         return $this->fetchAccessToken($client);
     }
@@ -99,7 +101,7 @@ class StubSocialAuthenticator extends SocialAuthenticator
     public function supports(Request $request): bool
     {
     }
-    public function getCredentials(Request $request)
+    public function getCredentials(Request $request): mixed
     {
     }
     public function getUser($credentials, UserProviderInterface $userProvider): ?UserInterface
@@ -111,11 +113,16 @@ class StubSocialAuthenticator extends SocialAuthenticator
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey): ?Response
     {
     }
+
+    public function authenticate(Request $request): Passport
+    {
+        // TODO: Implement authenticate() method.
+    }
 }
 
 class SomeUser implements UserInterface
 {
-    public function getRoles()
+    public function getRoles(): array
     {
     }
 
@@ -132,6 +139,10 @@ class SomeUser implements UserInterface
     }
 
     public function eraseCredentials()
+    {
+    }
+
+    public function getUserIdentifier(): string
     {
     }
 }
